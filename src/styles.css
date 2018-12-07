@@ -1,1 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
+.page-section {
+  border:0.1em solid #e5e5e5;
+  border-radius: 5px;
+  box-shadow: #dddddd 1px 1px;
+  padding:6px;
+  min-height: 600px;
+}
+.right-border {
+  border:0px;
+  border-right: 0.1em solid #e5e5e5;
+}
+.left-border {
+  border:0px;
+  border-left: 0.1em solid #e5e5e5;
+}
+.customer-manager-navbar {
+  background-color: #337ab7;
+  color: white !important;
+}
+a.customer-manager-navbar {
+  color: white !important;
+}
+.banner {
+  float: inside;
+  border-radius: 3px;
+  padding: 10px 6px 6px;
+  text-align: center;
+  font-family: "Arial";
+  font-size: 20px;
+  font-weight: bold;
+}
+.margin-lg {
+  margin-top:15px;
+}
+
+.margin-md {
+  margin-top:10px;
+}
+
+.margin-sm {
+  margin-top:5px;
+}
+
+.padding-sm {
+  padding:5px;
+}
+.padding-md {
+  padding:10px;
+}
+.padding-lg {
+  padding:15px;
+}

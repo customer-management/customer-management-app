@@ -1,31 +1,48 @@
-<div class="page-section form-group-lg margin-md padding-lg">
-  <h1>Add Customer</h1>
-
-  <div class="input-group margin-lg">
-    <div class="input-group-addon">
-      <i class="fa fa-user"></i>
+<div class="cms-card cms-card-md form-group-lg margin-md padding-lg margin-left-sm">
+  <h3>Add Customer</h3>
+  <form>
+    <div class="form-group" [class.invalid]="partyName.touched && partyName.invalid">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-user"></i></span>
+        </div>
+        <input class="form-control" id="name" type="text" placeholder="Party Name" textInputValidator [minLength]="8" [fieldName]="'Party Name'"
+               [(ngModel)]="customerForm.name" name="name" #partyName="ngModel" autocomplete="off">
+      </div>
+      <small *ngIf="partyName.touched && partyName.invalid">
+        {{partyName.errors?.errorMessage}}
+      </small>
     </div>
-    <input class="form-control" id="first-name" type="text" placeholder="First Name">
-  </div>
-
-  <div class="input-group margin-lg">
-    <div class="input-group-addon">
-      <i class="fa fa-user"></i>
+    <div class="form-group" [class.invalid]="email.touched && email.invalid">
+      <div class="input-group margin-lg">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+        </div>
+        <input class="form-control" id="email" type="email" placeholder="Email"
+               #email="ngModel" [(ngModel)]="customerForm.email" name="email" emailValidator [fieldName]="'Email'" autocomplete="off">
+      </div>
+      <small *ngIf="email.touched && email.invalid">
+        {{email.errors?.errorMessage}}
+      </small>
     </div>
-    <input class="form-control" id="middle-Name" type="text" placeholder="Middle Name">
-  </div>
 
-  <div class="input-group margin-lg">
-    <div class="input-group-addon">
-      <i class="fa fa-user"></i>
+    <div class="form-group" [class.invalid]="phoneNo.touched && phoneNo.invalid">
+      <div class="input-group margin-lg">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-phone"></i></span>
+        </div>
+        <input class="form-control" id="phone" type="text" placeholder="Phone"
+               phoneInputValidator [fieldName]="'Phone Number'" [required]="true" name="phoneNo"
+               [(ngModel)]="customerForm.phone" #phoneNo="ngModel" autocomplete="off">
+      </div>
+      <small *ngIf="phoneNo.touched && phoneNo.invalid">
+        {{phoneNo.errors?.errorMessage}}
+      </small>
     </div>
-    <input class="form-control" id="last-Name" type="text" placeholder="Last Name">
-  </div>
 
-  <div class="input-group margin-lg">
-    <div class="input-group-addon">
-      <i class="fa fa-envelope"></i>
+    <div class="margin-lg text-right">
+      <button class="btn btn-md bg-blue font-white">Submit</button>
+      <button class="btn btn-md bg-secondary font-white margin-left-sm">Reset</button>
     </div>
-    <input class="form-control" id="email" type="text" placeholder="Email">
-  </div>
+  </form>
 </div>

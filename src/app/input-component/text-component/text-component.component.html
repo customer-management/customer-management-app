@@ -1,0 +1,13 @@
+<div class="input-group margin-lg">
+  <div class="input-group-prepend">
+    <span class="input-group-text">
+      <i [ngClass]="iconClass"></i>
+    </span>
+  </div>
+  <input class="form-control" id="{{inputId}}" type="text" placeholder="{{placeholder}}" [required]="required" ngModel="fieldValue" (blur)="validate()">
+  <div class="input-group-append">
+    <span class="input-group-text" [ngClass]="appendIconClass">
+      <i class="fa fa-" data-toggle="tooltip" title="{{tooltipMessage}}"></i>
+    </span>
+  </div>
+</div>

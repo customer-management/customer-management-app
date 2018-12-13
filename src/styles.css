@@ -1,10 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 .page-section {
+  position: relative;
   border:0.1em solid #e5e5e5;
   border-radius: 5px;
   box-shadow: #dddddd 1px 1px;
   padding:6px;
-  min-height: 600px;
+  min-height: 400px;
 }
 .right-border {
   border:0px;
@@ -24,7 +25,7 @@ a.customer-manager-navbar {
 .banner {
   float: inside;
   border-radius: 3px;
-  padding: 10px 6px 6px;
+  padding: 3px 3px 3px;
   text-align: center;
   font-family: "Arial";
   font-size: 20px;
@@ -41,6 +42,15 @@ a.customer-manager-navbar {
 .margin-sm {
   margin-top:5px;
 }
+.margin-left-sm {
+  margin-left:5px;
+}
+.margin-left-md {
+  margin-left:10px;
+}
+.margin-left-lg {
+  margin-left:15px;
+}
 
 .padding-sm {
   padding:5px;
@@ -50,4 +60,68 @@ a.customer-manager-navbar {
 }
 .padding-lg {
   padding:15px;
+}
+.padding-x-lg {
+  padding:20px;
+}
+.padding-xx-lg {
+  padding:25px;
+}
+.font-white {
+  color:#ffffff!important;
+}
+ul.font-white > li > a {
+  color:#ffffff!important;
+}
+.bg-blue {
+  background-color: #3b5999!important;
+}
+.validation-valid {
+  border:0.1em solid #00b700;
+}
+.validation-valid > i {
+  color: #00b700 !important;
+}
+.invalid {
+
+}
+.invalid > label {
+  color: #e30000;
+}
+.invalid > small {
+  color: #e30000;
+}
+.invalid > div> div > span {
+  border:0.1em solid #e30000;
+  border-right: 1px solid #ced4da;;
+}
+.invalid > div> input, .invalid > div> select {
+  border:0.1em solid #e30000;
+  border-left: 1px solid #ced4da;;
+}
+.validation-invalid > i {
+  color : #e30000;
+}
+div.cms-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.cms-card-sm {
+  min-height: 200px;
+  min-width: 200px;
+}
+.cms-card-md {
+  min-height: 200px;
+  min-width: 350px;
+}
+.error {
+ color: #e30000;
+}
+.font-md {
+  font-size: 12px!important;
+}
+.font-lg {
+  font-size: 16px!important;
+}
+.font-billing {
+  font-family: "Consolas" !important;
 }

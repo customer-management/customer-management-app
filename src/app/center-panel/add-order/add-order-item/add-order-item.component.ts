@@ -1,6 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {OrderItem} from '../order-item';
-
+import {AddOrderComponent} from '../add-order.component';
+declare var $;
 @Component({
   selector: 'app-add-order-item',
   templateUrl: './add-order-item.component.html',
@@ -8,27 +9,55 @@ import {OrderItem} from '../order-item';
 })
 export class AddOrderItemComponent implements OnInit {
   @Input('partyName') partyName: string;
-  stockItems = new Array<any>();
-  orderItems = new Array<OrderItem>();
-  orderItem = new OrderItem('');
-  constructor() { }
+  @Input('viewAction') viewAction: string;
+  @Input('changeSelect') changeSelect: boolean;
 
+  @Output() resetOrderItems = new EventEmitter<any>();
+
+  stockItems = new Array<any>();
+  displayStockItems = new Array<any>();
+  orderItems = new Array<OrderItem>();
+  orderItem = new OrderItem('NULL');
+  isUpdating = false;
+  isEditing = false;
+  totalItemCount = 0;
+  totalOrderValue = 0;
+
+  constructor(private addOrderComponent: AddOrderComponent) { }
+  doResetOrderItems() {
+    this.resetOrderItems.emit(true);
+  }
   ngOnInit() {
+    if (this.changeSelect) {
+      this.resetItems();
+    }
     this.loadStockItems();
+    for (let i = 0; i < this.stockItems.length; i++) {
+      this.displayStockItems.push(this.stockItems[i]);
+    }
   }
 
   addItem() {
-    const newItem = new OrderItem('NULL');
+    this.isUpdating = true;
+    const newItem = this.orderItem.createCopy();
+    this.orderItem.reset();
     console.log('Adding item', newItem);
-    this.orderItems.push(newItem);
-    // this.orderItems.push(currentItem);
+    const orderItemIndex = this.getOrderIndexByItem(newItem.item);
+    if (orderItemIndex === -1) {
+      this.orderItems.push(newItem);
+    } else {
+      this.orderItems[orderItemIndex].updateWith(newItem);
+    }
+    this.isUpdating = false;
+    this.isEditing = false;
+    this.createOrUpdateOrder();
   }
-  updateItemTotal(orderItem: OrderItem) {
-    let total = orderItem.unitPrice * orderItem.quantity;
-    const totalDiscount = total * orderItem.discountPercentage / 100;
+  updateItemTotal() {
+    let total = this.orderItem.unitPrice * this.orderItem.quantity;
+    const totalDiscount = total * this.orderItem.discountPercentage / 100;
     total = total - totalDiscount;
-    orderItem.itemTotal = total;
-    orderItem.discount = totalDiscount;
+    this.orderItem.itemTotal = total;
+    this.orderItem.discount = totalDiscount;
   }
   getUnitPrice(orderItem: OrderItem) {
     // console.log('Getting unit price for ', orderItem);
@@ -43,7 +72,88 @@ export class AddOrderItemComponent implements OnInit {
       }
     }
   }
+  resetItems() {
+    this.orderItem.reset();
+    this.createOrUpdateOrder();
+  }
+  closeModal() {
+    $('#new-order-form').modal('hide');
+  }
+  createOrUpdateOrder() {
+    let items = 0;
+    let totalPrice = 0.00;
+    for (let i = 0; i < this.orderItems.length; i++) {
+      const orderItem = this.orderItems[i];
+      if (orderItem.quantity > 0) {
+        items++;
+        totalPrice += orderItem.itemTotal;
+      }
+    }
+    this.totalItemCount = items;
+    this.totalOrderValue = totalPrice;
+    this.addOrderComponent.updateOrderSummary(items, totalPrice);
+  }
 
+  editOrderItem(orderItemId: string) {
+    let index = -1;
+    let orderItem;
+    for (let i = 0; i < this.orderItems.length; i++) {
+      if (this.orderItems[i].OrderItemId === orderItemId) {
+        orderItem = this.orderItems[i];
+        index = i;
+      }
+    }
+    this.orderItem.makeReplica(orderItem);
+    this.orderItems.splice(index, 1);
+    this.isEditing = true;
+    this.createOrUpdateOrder();
+  }
+  deleteOrderItem(orderItemId: string) {
+    this.orderItems.splice(this.getOrderIndex(orderItemId));
+    this.createOrUpdateOrder();
+  }
+
+  getIndex(items: any[], itemId: string) {
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].itemId === itemId) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  getOrderIndex(orderItemId: string) {
+    for (let i = 0; i < this.orderItems.length; i++) {
+      if (this.orderItems[i].OrderItemId === orderItemId) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  getOrderIndexByItem(itemId: string) {
+    for (let i = 0; i < this.orderItems.length; i++) {
+      if (this.orderItems[i].item === itemId) {
+        return i;
+      }
+    }
+    return -1;
+  }
+  getItemName(itemId: string): string {
+    const item = this.getItem(itemId);
+
+    return item ? item.itemName : undefined;
+  }
+  getStockAvailable(itemId: string) {
+    const item = this.getItem(itemId);
+    return item ? item.stockAvailable : 0;
+  }
+  getItem(itemId: string): any {
+    for (let i = 0; i < this.stockItems.length; i++) {
+      const item = this.stockItems[i];
+      if (item.itemId === itemId) {
+        return item;
+      }
+    }
+  }
   private loadStockItems() {
     const stock1 = {
       itemId : 'ITEM0001',

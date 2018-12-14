@@ -23,16 +23,16 @@ export class EmailValidator implements Validator {
       return {'errorMessage' : this.fieldName + ' is a required field. Please enter a valid Email.'};
     }
     const indexOfAt = val.indexOf('@');
-    console.log('indexOfAt', indexOfAt);
+    // console.log('indexOfAt', indexOfAt);
     const userName = val.substring(0, indexOfAt);
     const remainingString = val.substring(indexOfAt + 1, val.length);
 
     const indexOfDot = remainingString.indexOf('.');
-    console.log('indexOfDot', indexOfDot);
+    // console.log('indexOfDot', indexOfDot);
     const secondLevelDomain = indexOfDot < 0 ? remainingString : remainingString.substring(0, indexOfDot);
-    console.log('username, second level domain ', userName, secondLevelDomain);
+    // console.log('username, second level domain ', userName, secondLevelDomain);
     const topLevelDomain = indexOfDot < 0 ? '' : remainingString.substring(indexOfDot, remainingString.length);
-    console.log('topLevelDomain ', topLevelDomain);
+    // console.log('topLevelDomain ', topLevelDomain);
 
     if (indexOfAt < 4) {
       errorMsg = 'Invalid email. Email ID should be in the format \'username@domain.com\'.';

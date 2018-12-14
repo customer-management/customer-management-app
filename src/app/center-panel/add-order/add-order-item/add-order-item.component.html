@@ -1,50 +1,111 @@
-<div class="modal" id="new-order-form">
-  <div class="modal-dialog" style="max-width: 60%;">
+<div class="modal" id="new-order-form" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" style="max-width: 80%;">
     <div class="modal-content">
 
       <!-- Modal Header -->
       <div class="modal-header">
         <h4 class="modal-title">Build Order - {{partyName}}</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" (click)="resetItems()" *ngIf="viewAction !== 'CONFIRM'">&times;</button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-        <table class="table table-borderless text-center">
-          <thead>
+        <table class="table table-borderless">
+          <thead class="text-center">
             <tr>
-              <th style="width: 35%;">Select Item</th>
-              <th style="width: 18%;">Unit Price</th>
-              <th style="width: 12%;">Quantity</th>
-              <th style="width: 20%;">Discount</th>
-              <th style="width: 15%;">Total</th>
-              <th><a href="#" class="btn bg-blue font-white" title="Add New Item" (click)="addItem()"><i class="fa fa-plus"></i></a></th>
+              <th class="font-lg" style="width: 30%;">Select Item</th>
+              <th class="font-lg" style="width: 7%;">Unit Price</th>
+              <th class="font-lg" style="width: 20%;">Quantity</th>
+              <th class="font-lg" style="width: 20%;"><span class="d-block">Discount</span>(%)</th>
+              <th class="font-lg" style="width: 15%;">Total</th>
+              <th class="font-lg" style="width: 8%;">Action</th>
             </tr>
           </thead>
-          <tbody class="font-md">
-            <tr *ngFor="let orderItem of orderItems">
+          <tbody class="font-lg">
+            <tr class="text-center">
               <td>
-                <select class="form-control font-md font-billing" [(ngModel)]="orderItem.item" (change)="getUnitPrice(orderItem); updateItemTotal(orderItem);">
-                  <option class="font-md font-billing" value="NULL" selected>-- Select an Item --</option>
-                  <option class="font-md font-billing" *ngFor="let stock of stockItems" value="{{stock.itemId}}">{{stock.itemName}}</option>
+                <select class="form-control font-billing" [(ngModel)]="orderItem.item"
+                        (change)="getUnitPrice(orderItem); updateItemTotal(orderItem);" [disabled]="isEditing" #selectedItem>
+                  <option class="font-billing" value="NULL" selected>-- Select an Item --</option>
+                  <option class="font-billing" *ngFor="let stock of displayStockItems" value="{{stock.itemId}}">{{stock.itemName}}</option>
                 </select>
+                <span class="font-md font-billing font-weight-bold text-left">
+                  {{selectedItem.value === 'NULL' ? 'Select an item to view stock' : ('Stock available - ' + getStockAvailable(orderItem.item))}}
+                </span>
               </td>
               <td>
-                <span class="font-md font-billing">{{orderItem.unitPrice | currency: 'INR'}}</span>
+                <span class="font-billing">{{orderItem.unitPrice | currency: 'INR'}}</span>
               </td>
               <td>
-                <input type="number" maxlength="2" class="form-control font-md font-billing" [(ngModel)]="orderItem.quantity" (keyup)="updateItemTotal(orderItem)">
+                <input type="number" maxlength="3" class="form-control font-billing text-center"
+                       [(ngModel)]="orderItem.quantity"
+                       [disabled]="orderItem.item === 'NULL'"
+                       (keyup)="updateItemTotal()"
+                       (change)="updateItemTotal()"
+                       #quantity="ngModel" name="quantity"
+                       quantityValidator [maxQuantity]="getStockAvailable(orderItem.item)">
+                <small *ngIf="quantity.touched && quantity.invalid" class="font-sm font-billing error">{{quantity.errors?.errorMessage}}</small>
               </td>
               <td>
-                <input type="number" maxlength="2" class="form-control font-md font-billing"
-                       [(ngModel)]="orderItem.discountPercentage" (keyup)="updateItemTotal(orderItem)">
-                <span class="font-md font-billing">Discount : {{orderItem.discount | currency: 'INR'}}</span>
+                <input type="number" maxlength="2" class="form-control font-billing text-center"
+                       [disabled]="orderItem.item === 'NULL'"
+                       (keyup)="updateItemTotal()"
+                       (change)="updateItemTotal()"
+                       #discount="ngModel"
+                       percentageValidator [maxPercentage]="40"
+                       [(ngModel)]="orderItem.discountPercentage">
+                <small class="font-sm font-billing error" *ngIf="discount.touched && discount.invalid">{{discount.errors?.errorMessage}}</small>
+                <span class="font-sm font-billing" *ngIf="!(discount.touched && discount.invalid)">Discount : {{orderItem.discount | currency: 'INR'}}</span>
               </td>
               <td>
-                <span class="font-lg font-billing">{{orderItem.itemTotal | currency: 'INR'}}</span>
+                <span class="font-billing" [ngClass]="(orderItem.item === 'NULL'  || quantity.invalid || discount.invalid) ? 'error' : ''">
+                  {{((quantity.touched && quantity.invalid) || (discount.touched && discount.invalid)) ? 'At least one input is invalid.' : (orderItem.itemTotal | currency: 'INR')}}
+                </span>
               </td>
               <td>
-                <a href="#" title="Delete this item"><i class="fa fa-trash"></i></a>
+                <button title="Save item" *ngIf="orderItem.item !== 'NULL'" class="btn btn-primary"
+                        (click)="addItem()"
+                        [disabled] = "orderItem.item === 'NULL'  || quantity.invalid || discount.invalid">
+                  <i class="fa font-x-lg" [ngClass]="isUpdating ? 'fa-spinner' : 'fa-save'"></i>
+                </button>
+              </td>
+            </tr>
+
+            <tr *ngIf="orderItems.length > 0">
+              <td class="text-center font-xx-lg" colspan="6" style="border-bottom: 0.1em solid #e8e8e8; border-top: 0.1em solid #e8e8e8">
+                ADDED ORDERS
+              </td>
+            </tr>
+
+            <tr *ngFor="let orderItem of orderItems" class="text-center">
+              <td>
+                <span class="font-billing">{{getItemName(orderItem.item)}}</span>
+              </td>
+              <td>
+                <span class="font-billing">{{orderItem.unitPrice | currency: 'INR'}}</span>
+              </td>
+              <td>
+                <span class="font-billing">{{orderItem.quantity}}</span>
+              </td>
+              <td>
+                <span class="font-billing d-block">{{orderItem.discountPercentage}}%</span>
+                <span class="font-sm font-billing">Discount : {{orderItem.discount | currency: 'INR'}}</span>
+              </td>
+              <td>
+                <span class="font-billing">{{orderItem.itemTotal | currency: 'INR'}}</span>
+              </td>
+              <td>
+                <a href="#" title="Edit this item" (click)="editOrderItem(orderItem.OrderItemId)"><i class="fa fa-edit font-x-lg"></i></a> &nbsp;|&nbsp;
+                <a href="#" title="Delete this item" (click)="deleteOrderItem(orderItem.OrderItemId)"><i class="fa fa-trash font-x-lg fail-icon"></i></a>
+              </td>
+            </tr>
+
+            <tr *ngIf="orderItems.length > 0">
+              <td class="text-center font-xx-lg" colspan="3" style="border-bottom: 0.1em solid #e8e8e8; border-top: 0.1em solid #e8e8e8">
+                <span class="float-left"><b>{{totalItemCount}}</b> ITEM{{totalItemCount > 1 ? 'S' : ''}}</span>
+              </td>
+              <td class="text-center font-xx-lg" colspan="3" style="border-bottom: 0.1em solid #e8e8e8; border-top: 0.1em solid #e8e8e8">
+                <span class="float-right">TOTAL <b>{{totalOrderValue | currency:"INR"}}</b></span>
               </td>
             </tr>
           </tbody>
@@ -52,8 +113,11 @@
        </div>
       <!-- Modal footer -->
       <div class="modal-footer">
-        <button type="button" class="btn bg-blue font-white">Create Order</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="button" class="btn bg-blue font-white" (click)="createOrUpdateOrder(); closeModal();" [disabled] = "orderItems.length === 0">
+          {{viewAction === 'CONFIRM' ? 'Update Order' : 'Create Order'}}
+        </button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="resetItems()" *ngIf="viewAction !== 'CONFIRM'">Close</button>
+        <button type="button" class="btn btn-light" data-dismiss="modal" *ngIf="viewAction === 'CONFIRM'">Close</button>
       </div>
     </div>
     </div>

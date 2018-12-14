@@ -16,6 +16,8 @@ import { OrdersComponent } from './center-panel/orders/orders.component';
 import { AddOrderComponent } from './center-panel/add-order/add-order.component';
 import {SelectValidator} from './validators/select-validator';
 import { AddOrderItemComponent } from './center-panel/add-order/add-order-item/add-order-item.component';
+import {QuantityValidator} from './validators/quantity-validator';
+import {PercentageValidator} from './validators/percentage-validator';
 
 @NgModule({
   declarations: [
@@ -28,11 +30,13 @@ import { AddOrderItemComponent } from './center-panel/add-order/add-order-item/a
     TextComponentComponent,
     OrdersComponent,
     AddOrderComponent,
+    AddOrderItemComponent,
     TextInputValidator,
     PhoneInputValidator,
     EmailValidator,
     SelectValidator,
-    AddOrderItemComponent
+    QuantityValidator,
+    PercentageValidator
   ],
   imports: [
     BrowserModule,

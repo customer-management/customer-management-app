@@ -113,15 +113,40 @@ div.cms-card {
   min-height: 200px;
   min-width: 350px;
 }
+.cms-card-lg {
+  min-height: 200px;
+  min-width: 650px;
+}
 .error {
  color: #e30000;
 }
-.font-md {
+.font-xx-sm {
+  font-size: 8px!important;
+}
+.font-x-sm {
+  font-size: 10px!important;
+}
+.font-sm {
   font-size: 12px!important;
 }
-.font-lg {
+.font-md {
   font-size: 16px!important;
+}
+.font-lg {
+  font-size: 20px!important;
+}
+.font-x-lg {
+  font-size: 24px!important;
+}
+.font-xx-lg {
+  font-size: 32px!important;
 }
 .font-billing {
   font-family: "Consolas" !important;
+}
+.success-icon {
+  color: #00b700 !important;
+}
+.fail-icon {
+  color: #e30000 !important;
 }

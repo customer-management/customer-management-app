@@ -23,11 +23,11 @@ export class PhoneInputValidator implements Validator {
       errorMsg = 'Please enter a valid phone number.';
     } else {
       if (isNaN(val)) {
-        console.log('Contains letter');
+        // console.log('Contains letter');
         errorMsg = this.fieldName + ' can only contain numbers.';
       } else if (val.length < 8) {
         errorMsg = this.fieldName + ' should contain minimum 8 numbers.';
-        console.log('Not enough characters');
+        // console.log('Not enough characters');
       } else {
         return null;
       }

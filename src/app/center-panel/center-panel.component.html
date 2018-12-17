@@ -6,7 +6,7 @@
 <div class="row">
   <!-- Recent items -->
   <div class="col-sm-4">
-    <customer-orders></customer-orders>
+    <customer-orders [allOrders] = "allOrders"></customer-orders>
   </div>
   <!-- Add customer -->
   <div class="col-sm-4">
@@ -14,7 +14,12 @@
   </div>
   <!-- Add Order -->
   <div class="col-sm-4">
-    <add-order [parties]="parties"></add-order>
+    <add-order [parties]="parties" [allOrders] = "allOrders"></add-order>
   </div>
 </div>
 
+<div class="row">
+  <div class="col-sm-12">
+    <order-history [allOrders] = "allOrders"></order-history>
+  </div>
+</div>

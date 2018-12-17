@@ -18,6 +18,7 @@ import {SelectValidator} from './validators/select-validator';
 import { AddOrderItemComponent } from './center-panel/add-order/add-order-item/add-order-item.component';
 import {QuantityValidator} from './validators/quantity-validator';
 import {PercentageValidator} from './validators/percentage-validator';
+import {OrderHistoryComponent} from './center-panel/order-history/order-history.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {PercentageValidator} from './validators/percentage-validator';
     EmailValidator,
     SelectValidator,
     QuantityValidator,
-    PercentageValidator
+    PercentageValidator,
+    OrderHistoryComponent
   ],
   imports: [
     BrowserModule,

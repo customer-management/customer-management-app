@@ -31,6 +31,9 @@ a.customer-manager-navbar {
   font-size: 20px;
   font-weight: bold;
 }
+.margin-x-lg {
+  margin-top:25px;
+}
 .margin-lg {
   margin-top:15px;
 }
@@ -107,7 +110,8 @@ div.cms-card {
 }
 .cms-card-sm {
   min-height: 200px;
-  min-width: 200px;
+  min-width: 180px;
+  max-width: 450px;
 }
 .cms-card-md {
   min-height: 200px;

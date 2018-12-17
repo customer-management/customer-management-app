@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {AllOrdersSummary} from '../all-orders-summary';
 
 @Component({
   selector: 'customer-orders',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
+  @Input('allOrders') allOrders: AllOrdersSummary;
 
   constructor() { }
 

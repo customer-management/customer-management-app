@@ -95,8 +95,10 @@
                 <span class="font-billing">{{orderItem.itemTotal | currency: 'INR'}}</span>
               </td>
               <td>
-                <a href="#" title="Edit this item" (click)="editOrderItem(orderItem.OrderItemId)"><i class="fa fa-edit font-x-lg"></i></a> &nbsp;|&nbsp;
-                <a href="#" title="Delete this item" (click)="deleteOrderItem(orderItem.OrderItemId)"><i class="fa fa-trash font-x-lg fail-icon"></i></a>
+                <div class="btn-group-sm">
+                  <button class="btn btn-primary" href="#" title="Edit this item" (click)="editOrderItem(orderItem.OrderItemId)"><i class="fa fa-edit font-lg"></i></button>&nbsp;
+                  <button class="btn btn-danger" href="#" title="Delete this item" (click)="deleteOrderItem(orderItem.OrderItemId)"><i class="fa fa-trash font-lg"></i></button>
+                </div>
               </td>
             </tr>
 

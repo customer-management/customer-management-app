@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {PartyOrder} from './party-order';
+import {AllOrdersSummary} from './all-orders-summary';
 
 @Component({
   selector: 'center-panel',
@@ -9,9 +11,13 @@ export class CenterPanelComponent implements OnInit {
 
   constructor() { }
   parties = new Array<any>();
+  allOrders = new AllOrdersSummary();
   ngOnInit() {
     this.loadParties();
   }
+
+
+
   private loadParties() {
     const party1 = {
       id: 'PAR001',

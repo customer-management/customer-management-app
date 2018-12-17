@@ -4,7 +4,7 @@
       <i [ngClass]="iconClass"></i>
     </span>
   </div>
-  <input class="form-control" id="{{inputId}}" type="text" placeholder="{{placeholder}}" [required]="required" ngModel="fieldValue" (blur)="validate()">
+  <input class="form-control" [id]="inputId" type="text" [placeholder]="placeholder" [required]="required" ngModel="fieldValue" (blur)="validate()">
   <div class="input-group-append">
     <span class="input-group-text" [ngClass]="appendIconClass">
       <i class="fa fa-" data-toggle="tooltip" title="{{tooltipMessage}}"></i>

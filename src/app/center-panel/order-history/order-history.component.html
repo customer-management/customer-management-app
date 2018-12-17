@@ -1,0 +1,19 @@
+<div class="cms-card cms-card-lg margin-x-lg">
+  <div class="text-center d-block padding-md">
+    <h3>ORDER HISTORY</h3>
+  </div>
+  <table class="table table-hover table-striped">
+    <tr>
+      <th>Party Name</th>
+      <th>Order Date</th>
+      <th>Amount</th>
+      <th>Status</th>
+    </tr>
+    <tr *ngFor="let party of allOrders.Orders">
+      <td>{{party.getPartyName()}}</td>
+      <td></td>
+      <td>{{party.orderTotal() | currency:"INR"}}</td>
+      <td>{{party.getStatus() === 'P' ? 'PENDING' : 'PAID & DELIVERED'}}</td>
+    </tr>
+  </table>
+</div>

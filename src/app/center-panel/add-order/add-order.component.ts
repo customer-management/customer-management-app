@@ -1,6 +1,8 @@
-import {Component, Inject, Injectable, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {OrderForm} from './order-form';
-import {AddOrderItemComponent} from './add-order-item/add-order-item.component';
+import {AllOrdersSummary} from '../all-orders-summary';
+import {PartyOrder} from '../party-order';
+import {OrderItem} from './order-item';
 declare var $;
 
 @Component({
@@ -9,38 +11,29 @@ declare var $;
   styleUrls: ['./add-order.component.css']
 })
 export class AddOrderComponent implements OnInit {
+  @Input('parties') parties: Array<any>;
+  @Input('allOrders') allOrders: AllOrdersSummary;
 
   constructor() { }
+
   orderForm = new OrderForm();
-  @Input('parties')parties: Array<any>;
   orderItemForm: any = {};
-  stockItems = new Array<any>();
   viewAction = '';
-  updatingParty = false;
-  orderCreated: boolean;
-  orderSummary = {
-    itemCount: 0,
-    totalPrice: 0.00
-  };
 
   ngOnInit() {
     this.orderForm.partyName = 'NULL';
-    // this.loadParties();
   }
 
   openForm(target: any) {
     const selected = target.value;
     console.log('Selected', selected);
     console.log('this.orderItemForm.partyName', this.orderItemForm.partyName);
-    this.orderItemForm.partyName = selected;
-    console.log('this.orderItemForm.partyName now', this.orderItemForm.partyName);
-
-    this.resetOrderSummary();
+    this.orderForm.partyId = selected;
 
     if (this.orderItemForm.partyName === 'NULL') {
       return false;
     }
-    this.orderItemForm.partyName = this.getPartyName(this.orderForm.partyName);
+    this.orderItemForm.partyName = this.getPartyName(this.orderForm.partyId);
     $('#new-order-form').modal('show');
   }
   cancelForm() {
@@ -59,37 +52,12 @@ export class AddOrderComponent implements OnInit {
   setViewAction(action: string) {
     this.viewAction = action;
   }
-  updateOrderSummary(itemCount: number, totalPrice: number) {
-    this.orderSummary.itemCount = itemCount;
-    this.orderSummary.totalPrice = totalPrice;
-    this.orderCreated = this.orderSummary.itemCount > 0;
-    if (!this.orderCreated) {
-      this.cancelForm();
-    }
+  submitOrder(orderItems: Array<OrderItem>) {
+    const partyOrder = new PartyOrder();
+    partyOrder.setPartyId(this.orderForm.partyId);
+    partyOrder.setPartyName(this.getPartyName(this.orderForm.partyId));
+    partyOrder.addOrders(orderItems);
+    partyOrder.setStatus('P');
+    this.allOrders.addPartyOrder(partyOrder);
   }
-  resetOrderSummary() {
-    this.orderSummary.itemCount = 0;
-    this.orderSummary.totalPrice = 0.00;
-    this.orderCreated = false;
-  }
-
-  private loadParties() {
-    const party1 = {
-      id: 'PAR001',
-      name: 'Maa Durga Groceries'
-    };
-    const party2 = {
-      id: 'PAR002',
-      name: 'Laxmi Traders'
-    };
-    const party3 = {
-      id: 'PAR003',
-      name: 'Vijaya Stores'
-    };
-
-    this.parties.push(party1);
-    this.parties.push(party2);
-    this.parties.push(party3);
-  }
-
 }

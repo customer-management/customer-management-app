@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {OrderItem} from '../order-item';
-import {AddOrderComponent} from '../add-order.component';
+import {AllOrdersSummary} from '../../all-orders-summary';
+import {PartyOrder} from '../../party-order';
 declare var $;
 @Component({
   selector: 'app-add-order-item',
@@ -11,6 +12,7 @@ export class AddOrderItemComponent implements OnInit {
   @Input('partyName') partyName: string;
   @Input('viewAction') viewAction: string;
   @Input('changeSelect') changeSelect: boolean;
+  @Input('allOrders') allOrders: AllOrdersSummary;
 
   @Output() resetOrderItems = new EventEmitter<any>();
 
@@ -23,10 +25,7 @@ export class AddOrderItemComponent implements OnInit {
   totalItemCount = 0;
   totalOrderValue = 0;
 
-  constructor(private addOrderComponent: AddOrderComponent) { }
-  doResetOrderItems() {
-    this.resetOrderItems.emit(true);
-  }
+  constructor() { }
   ngOnInit() {
     if (this.changeSelect) {
       this.resetItems();
@@ -91,7 +90,6 @@ export class AddOrderItemComponent implements OnInit {
     }
     this.totalItemCount = items;
     this.totalOrderValue = totalPrice;
-    this.addOrderComponent.updateOrderSummary(items, totalPrice);
   }
 
   editOrderItem(orderItemId: string) {
@@ -169,7 +167,7 @@ export class AddOrderItemComponent implements OnInit {
     };
     const stock3 = {
       itemId : 'ITEM0003',
-      itemName: 'Horlics Chocolate 1Kg Pet',
+      itemName: 'Horlicks Chocolate 1Kg Pet',
       unitPrice: 280.00,
       stockAvailable: 90
     };

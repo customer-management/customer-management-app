@@ -1,4 +1,4 @@
-<div class="cms-card cms-card-sm form-group-lg margin-md padding-lg margin-left-sm">
+<div class="cms-card cms-card-sm form-group margin-md padding-lg margin-left-sm">
   <h3>Create New Order</h3>
   <form>
     <div class="form-group" [class.invalid]="partyName.touched && partyName.invalid">
@@ -16,25 +16,30 @@
         {{partyName.errors?.errorMessage}}
       </small>
     </div>
-    <div class="form-group" *ngIf="orderCreated">
-      <div class="form-control font-white" [ngClass] = "orderCreated ? 'bg-blue' : 'bg-danger'" style="height: 45px;">
+    <div class="form-group" *ngIf="addOrderItemComponent.totalItemCount > 0">
+      <div class="form-control font-white" [ngClass] = "addOrderItemComponent.totalItemCount > 0 ? 'bg-blue' : 'bg-danger'" style="height: 45px;">
         <div class="row">
-          <div class="col-sm-1"><i class="fa font-x-lg" [ngClass] = "orderCreated ? 'fa-check' : 'fa-close'"></i></div>
-          <div class="col-sm-10 font-weight-bold font-lg">{{orderCreated ? 'Order has been created.' : 'Please select a party to create an order'}}</div>
+          <div class="col-sm-1"><i class="fa font-x-lg" [ngClass] = "addOrderItemComponent.totalItemCount > 0 ? 'fa-check' : 'fa-close'"></i></div>
+          <div class="col-sm-10 font-weight-bold font-lg">{{addOrderItemComponent.totalItemCount > 0 ? 'Order has been created.' : 'Please select a party to create an order'}}</div>
         </div>
       </div>
-      <p class="form-control"*ngIf="orderCreated">
-        <b>{{orderSummary.itemCount}}</b> item{{orderSummary.itemCount > 1 ? 's' : ''}}, total <b>{{orderSummary.totalPrice | currency: "INR"}}</b>.
+      <p class="form-control"*ngIf="addOrderItemComponent.totalItemCount > 0">
+        <b>{{addOrderItemComponent.totalItemCount}}</b> item{{addOrderItemComponent.totalItemCount> 1 ? 's' : ''}}, total <b>{{addOrderItemComponent.totalOrderValue | currency: "INR"}}</b>.
         <span class="float-right">
           <i class="fa fa-"></i><a href="#" data-toggle="modal" data-target="#new-order-form" (click)="setViewAction('CONFIRM')">View Order</a>
         </span>
       </p>
     </div>
     <div class="margin-lg text-right">
-      <button class="btn btn-md bg-blue font-white">Submit</button>
+      <button class="btn btn-md bg-blue font-white" (click)="submitOrder(addOrderItemComponent.orderItems)">Submit</button>
       <button class="btn btn-md bg-secondary font-white margin-left-sm">Reset</button>
     </div>
   </form>
 </div>
 <!-- #addOrderItemComponent is the template reference. 'addOrderItemComponent' will hold a local reference of the child component.-->
-<app-add-order-item [partyName]="getPartyName(orderForm.partyName)" [viewAction] ="viewAction" (resetRequest) = updatingParty #addOrderItemComponent></app-add-order-item>
+<app-add-order-item [partyName]="getPartyName(orderForm.partyName)"
+                    [allOrders] = "allOrders"
+                    [viewAction] ="viewAction"
+                    #addOrderItemComponent>
+
+</app-add-order-item>

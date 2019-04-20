@@ -19,6 +19,8 @@ import { AddOrderItemComponent } from './center-panel/add-order/add-order-item/a
 import {QuantityValidator} from './validators/quantity-validator';
 import {PercentageValidator} from './validators/percentage-validator';
 import {OrderHistoryComponent} from './center-panel/order-history/order-history.component';
+import {RouterModule} from '@angular/router';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import {OrderHistoryComponent} from './center-panel/order-history/order-history.
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    RouterModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

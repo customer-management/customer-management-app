@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {PartyOrder} from './party-order';
 import {AllOrdersSummary} from './all-orders-summary';
+import {CustManagerService} from '../cust-manager.service';
+import {RestEndpoints} from '../rest-endpoints';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'center-panel',
@@ -9,31 +12,29 @@ import {AllOrdersSummary} from './all-orders-summary';
 })
 export class CenterPanelComponent implements OnInit {
 
-  constructor() { }
+  constructor(private service: CustManagerService) { }
   parties = new Array<any>();
   allOrders = new AllOrdersSummary();
   ngOnInit() {
     this.loadParties();
   }
 
-
-
   private loadParties() {
-    const party1 = {
-      id: 'PAR001',
-      name: 'Maa Durga Groceries'
-    };
-    const party2 = {
-      id: 'PAR002',
-      name: 'Laxmi Traders'
-    };
-    const party3 = {
-      id: 'PAR003',
-      name: 'Vijaya Stores'
-    };
+    const response: Observable<any> = this.service.get(RestEndpoints.PARTY);
+    response
+      .subscribe(data => {
+          console.log('Data received after GET call - ', data);
+          for (let i = 0; i < data.length; i++) {
+            const party = {
+              id: data[i].partyId,
+              name: data[i].partyName
+            };
+            this.parties.push(party);
+          }
+        },
+        error => {
+          console.log('Error occurred on GET call - ', error);
+        });
 
-    this.parties.push(party1);
-    this.parties.push(party2);
-    this.parties.push(party3);
   }
 }

@@ -47,25 +47,21 @@
                 <small *ngIf="quantity.touched && quantity.invalid" class="font-sm font-billing error">{{quantity.errors?.errorMessage}}</small>
               </td>
               <td>
-                <input type="number" maxlength="2" class="form-control font-billing text-center"
-                       [disabled]="orderItem.item === 'NULL'"
-                       (keyup)="updateItemTotal()"
-                       (change)="updateItemTotal()"
-                       #discount="ngModel"
-                       percentageValidator [maxPercentage]="40"
-                       [(ngModel)]="orderItem.discountPercentage">
-                <small class="font-sm font-billing error" *ngIf="discount.touched && discount.invalid">{{discount.errors?.errorMessage}}</small>
-                <span class="font-sm font-billing" *ngIf="!(discount.touched && discount.invalid)">Discount : {{orderItem.discount | currency: 'INR'}}</span>
+                <span class="font-billing">
+                  {{(orderItem.discountPercentage)}}%
+                </span>
+                <br>
+                <span class="font-sm font-billing" *ngIf="orderItem.discountPercentage">Discount : {{orderItem.discount | currency: 'INR'}}</span>
               </td>
               <td>
-                <span class="font-billing" [ngClass]="(orderItem.item === 'NULL'  || quantity.invalid || discount.invalid) ? 'error' : ''">
-                  {{((quantity.touched && quantity.invalid) || (discount.touched && discount.invalid)) ? 'At least one input is invalid.' : (orderItem.itemTotal | currency: 'INR')}}
+                <span class="font-billing" [ngClass]="(orderItem.item === 'NULL'  || quantity.invalid) ? 'error' : ''">
+                  {{((quantity.touched && quantity.invalid)) ? 'At least one input is invalid.' : (orderItem.itemTotal | currency: 'INR')}}
                 </span>
               </td>
               <td>
                 <button title="Save item" *ngIf="orderItem.item !== 'NULL'" class="btn btn-primary"
                         (click)="addItem()"
-                        [disabled] = "orderItem.item === 'NULL'  || quantity.invalid || discount.invalid">
+                        [disabled] = "orderItem.item === 'NULL'  || quantity.invalid">
                   <i class="fa font-x-lg" [ngClass]="isUpdating ? 'fa-spinner' : 'fa-save'"></i>
                 </button>
               </td>

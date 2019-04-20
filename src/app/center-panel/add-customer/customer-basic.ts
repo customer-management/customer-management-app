@@ -1,6 +1,6 @@
 export class CustomerBasic {
   constructor(
-    public name?: string,
+    public partyName?: string,
     public email?: string,
     public phone?: string,
     public partyId?: string
@@ -9,10 +9,10 @@ export class CustomerBasic {
       this.partyId = 'PAR' +  random.substring(random.length - 5);
   }
   createCopy() {
-    return new CustomerBasic(this.name, this.email, this.phone);
+    return new CustomerBasic(this.partyName, this.email, this.phone);
   }
   reset() {
-    this.name = '';
+    this.partyName = '';
     this.email = '';
     this.phone = '';
   }

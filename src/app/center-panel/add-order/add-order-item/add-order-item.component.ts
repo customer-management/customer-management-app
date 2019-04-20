@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {OrderItem} from '../order-item';
 import {AllOrdersSummary} from '../../all-orders-summary';
 import {PartyOrder} from '../../party-order';
+import {CustManagerService} from '../../../cust-manager.service';
 declare var $;
 @Component({
   selector: 'app-add-order-item',
@@ -25,15 +26,17 @@ export class AddOrderItemComponent implements OnInit {
   totalItemCount = 0;
   totalOrderValue = 0;
 
-  constructor() { }
+  constructor(private service: CustManagerService) { }
   ngOnInit() {
     if (this.changeSelect) {
       this.resetItems();
     }
     this.loadStockItems();
     for (let i = 0; i < this.stockItems.length; i++) {
+      console.log('Stock items loading', this.stockItems[i]);
       this.displayStockItems.push(this.stockItems[i]);
     }
+    console.log('Stock items loaded', this.displayStockItems);
   }
 
   addItem() {
@@ -67,6 +70,7 @@ export class AddOrderItemComponent implements OnInit {
         // console.log('Item unit price ', item.unitPrice);
 
         orderItem.unitPrice = item.unitPrice;
+        orderItem.discountPercentage = item.discount;
         return;
       }
     }
@@ -153,7 +157,7 @@ export class AddOrderItemComponent implements OnInit {
     }
   }
   private loadStockItems() {
-    const stock1 = {
+   /* const stock1 = {
       itemId : 'ITEM0001',
       itemName: 'Fortune Mustard Oil 1L Bottle',
       unitPrice: 135.40,
@@ -202,6 +206,24 @@ export class AddOrderItemComponent implements OnInit {
     this.stockItems.push(stock5);
     this.stockItems.push(stock6);
     this.stockItems.push(stock7);
+*/
+    this.service.get('/stock').subscribe(data => {
+      console.log('Data received from stock - ', data);
+      for (let i = 0; i < data.length; i++) {
+        const stock = data[i];
+        const stockToAdd = {
+          index: i,
+          itemId : stock.stockId,
+          itemName: stock.stockDescription,
+          unitPrice: stock.unitPrice,
+          stockAvailable: stock.availableStocks,
+          discount: stock.discount
+        };
+        console.log('Added stock', stockToAdd);
+        this.stockItems.push(stockToAdd);
+        this.displayStockItems.push(stockToAdd);
+      }
+    });
   }
 
 }

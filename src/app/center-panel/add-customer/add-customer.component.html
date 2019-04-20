@@ -1,13 +1,16 @@
 <div class="cms-card cms-card-sm form-group-lg margin-md padding-md margin-left-sm">
   <h3>Add Customer</h3>
-  <form>
+  <p class="success-icon font-md" *ngIf="successMessage">
+    <span class="fa fa-thumbs-up"></span><span class="margin-left-md">{{successMessage}}</span>
+  </p>
+  <form #addPartyForm>
     <div class="form-group" [class.invalid]="partyName.touched && partyName.invalid">
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text"><i class="fa fa-user"></i></span>
         </div>
         <input class="form-control" id="name" type="text" placeholder="Party Name" textInputValidator [minLength]="8" [fieldName]="'Party Name'"
-               [(ngModel)]="customerForm.name" name="name" #partyName="ngModel" autocomplete="off">
+               [(ngModel)]="customerForm.partyName" name="name" #partyName="ngModel" autocomplete="off">
       </div>
       <small *ngIf="partyName.touched && partyName.invalid">
         {{partyName.errors?.errorMessage}}
@@ -41,7 +44,7 @@
     </div>
 
     <div class="margin-lg text-right">
-      <button class="btn btn-md bg-blue font-white" (click)="addParty()">Submit</button>
+      <button class="btn btn-md bg-blue font-white" (click)="addParty(addPartyForm)">Submit</button>
       <button class="btn btn-md bg-secondary font-white margin-left-sm">Reset</button>
     </div>
   </form>

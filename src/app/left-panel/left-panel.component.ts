@@ -1,5 +1,6 @@
 import { CustManagerService } from './../cust-manager.service';
 import { Component, OnInit } from '@angular/core';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'left-panel',
@@ -12,8 +13,11 @@ export class LeftPanelComponent implements OnInit {
   recentItems: Array<any> = [];
 
   ngOnInit() {
-    this.loadChanges();
+    setInterval(() => {
+      this.loadChanges();
+      }, 20000);
     console.log('this.recentItems', this.recentItems);
+
   }
   loadChanges() {
     this.recentItems.length = 0;

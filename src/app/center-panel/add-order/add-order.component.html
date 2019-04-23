@@ -1,15 +1,15 @@
 <div class="cms-card cms-card-sm form-group margin-md padding-lg margin-left-sm">
   <h3>Create New Order</h3>
-  <form>
+  <form #createOrderForm>
     <div class="form-group" [class.invalid]="partyName.touched && partyName.invalid">
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text"><i class="fa fa-user"></i></span>
         </div>
-        <select class="form-control" id="name" type="text" selectValidator [fieldName]="'Party Name'"
+        <select class="form-control font-sm" id="name" type="text" selectValidator [fieldName]="'Party Name'"
                 [(ngModel)]="orderForm.partyName" name="name" #partyName="ngModel" (change)="openForm($event.target); addOrderItemComponent.orderItems.length = 0;">
           <option value="NULL" selected="selected">-- Select a Party -- </option>
-          <option *ngFor="let party of parties" value="{{party.id}}">{{party.name}}</option>
+          <option *ngFor="let party of parties" value="{{party.id}}">{{party.name + '-' + party.address}}</option>
         </select>
       </div>
       <small *ngIf="partyName.touched && partyName.invalid">
@@ -31,8 +31,9 @@
       </p>
     </div>
     <div class="margin-lg text-right">
-      <button class="btn btn-md bg-blue font-white" (click)="submitOrder(addOrderItemComponent.orderItems)">Submit</button>
-      <button class="btn btn-md bg-secondary font-white margin-left-sm">Reset</button>
+      <button class="btn btn-sm bg-blue font-white font-sm" (click)="refreshPartyList()">Refresh Party List</button>
+      <button class="btn btn-sm bg-blue font-white margin-left-sm font-sm" (click)="submitOrder(addOrderItemComponent.orderItems)">Submit</button>
+      <button class="btn btn-sm bg-secondary font-white margin-left-sm font-sm" (click)="createOrderForm.reset()">Reset</button>
     </div>
   </form>
 </div>

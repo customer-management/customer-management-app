@@ -154,3 +154,6 @@ div.cms-card {
 .fail-icon {
   color: #e30000 !important;
 }
+.uppercase {
+  text-transform:uppercase;
+}

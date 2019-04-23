@@ -1,4 +1,8 @@
-import { Component } from '@angular/core';
+import { RestEndpoints } from './rest-endpoints';
+import { Observable } from 'rxjs';
+import { AllOrdersSummary } from './center-panel/all-orders-summary';
+import { CustManagerService } from './cust-manager.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +10,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+
 }

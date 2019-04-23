@@ -1,5 +1,5 @@
 <div class="cms-card cms-card-sm form-group-lg margin-md padding-md margin-left-sm">
-  <h3>Add Customer</h3>
+  <h3>Add New Party</h3>
   <p class="success-icon font-md" *ngIf="successMessage">
     <span class="fa fa-thumbs-up"></span><span class="margin-left-md">{{successMessage}}</span>
   </p>
@@ -9,8 +9,8 @@
         <div class="input-group-prepend">
           <span class="input-group-text"><i class="fa fa-user"></i></span>
         </div>
-        <input class="form-control" id="name" type="text" placeholder="Party Name" textInputValidator [minLength]="8" [fieldName]="'Party Name'"
-               [(ngModel)]="customerForm.partyName" name="name" #partyName="ngModel" autocomplete="off">
+        <input class="form-control uppercase font-sm" id="name" type="text" placeholder="Party Name" textInputValidator [minLength]="8" [fieldName]="'Party Name'"
+               [(ngModel)]="partyForm.partyName" name="name" #partyName="ngModel" autocomplete="off">
       </div>
       <small *ngIf="partyName.touched && partyName.invalid">
         {{partyName.errors?.errorMessage}}
@@ -21,8 +21,8 @@
         <div class="input-group-prepend">
           <span class="input-group-text"><i class="fa fa-envelope"></i></span>
         </div>
-        <input class="form-control" id="email" type="email" placeholder="Email"
-               #email="ngModel" [(ngModel)]="customerForm.email" name="email" emailValidator [fieldName]="'Email'" autocomplete="off">
+        <input class="form-control font-sm" id="email" type="email" placeholder="Email"
+               #email="ngModel" [(ngModel)]="partyForm.email" name="email" emailValidator [fieldName]="'Email'" autocomplete="off">
       </div>
       <small *ngIf="email.touched && email.invalid">
         {{email.errors?.errorMessage}}
@@ -34,18 +34,31 @@
         <div class="input-group-prepend">
           <span class="input-group-text"><i class="fa fa-phone"></i></span>
         </div>
-        <input class="form-control" id="phone" type="text" placeholder="Phone"
+        <input class="form-control font-sm" id="phone" type="text" placeholder="Phone"
                phoneInputValidator [fieldName]="'Phone Number'" [required]="true" name="phoneNo"
-               [(ngModel)]="customerForm.phone" #phoneNo="ngModel" autocomplete="off">
+               [(ngModel)]="partyForm.phone" #phoneNo="ngModel" autocomplete="off">
       </div>
       <small *ngIf="phoneNo.touched && phoneNo.invalid">
         {{phoneNo.errors?.errorMessage}}
       </small>
     </div>
 
+    <div class="form-group" [class.invalid]="partyAddress.touched && partyAddress.invalid">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-user"></i></span>
+        </div>
+        <input class="form-control uppercase font-sm" id="address" type="text" placeholder="Address" textInputValidator [minLength]="4" [fieldName]="'Address'"
+               [(ngModel)]="partyForm.address" name="address" #partyAddress="ngModel" autocomplete="off">
+      </div>
+      <small *ngIf="partyAddress.touched && partyAddress.invalid">
+        {{partyAddress.errors?.errorMessage}}
+      </small>
+    </div>
+
     <div class="margin-lg text-right">
       <button class="btn btn-md bg-blue font-white" (click)="addParty(addPartyForm)">Submit</button>
-      <button class="btn btn-md bg-secondary font-white margin-left-sm">Reset</button>
+      <button class="btn btn-md bg-secondary font-white margin-left-sm" (click)="addPartyForm.reset()">Reset</button>
     </div>
   </form>
 </div>

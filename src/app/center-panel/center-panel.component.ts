@@ -19,7 +19,8 @@ export class CenterPanelComponent implements OnInit {
     this.loadParties();
   }
 
-  private loadParties() {
+  loadParties() {
+    this.parties.length = 0;
     const response: Observable<any> = this.service.get(RestEndpoints.PARTY);
     response
       .subscribe(data => {
@@ -27,7 +28,8 @@ export class CenterPanelComponent implements OnInit {
           for (let i = 0; i < data.length; i++) {
             const party = {
               id: data[i].partyId,
-              name: data[i].partyName
+              name: data[i].partyName,
+              address: data[i].address
             };
             this.parties.push(party);
           }

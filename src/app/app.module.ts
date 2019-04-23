@@ -1,12 +1,13 @@
+import { AddPartyComponent } from './center-panel/add-party/add-party.component';
+import { AppRoute } from './app.routing';
+import { LeftPanelComponent } from './left-panel/left-panel.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { RightPanelComponent } from './right-panel/right-panel.component';
 import { CenterPanelComponent } from './center-panel/center-panel.component';
-import {AddCustomerComponent} from './center-panel/add-customer/add-customer.component';
 import { TextComponentComponent } from './input-component/text-component/text-component.component';
 import {FormsModule} from '@angular/forms';
 import {TextInputValidator} from './validators/text-input-validator';
@@ -27,9 +28,9 @@ import {HttpClientModule} from '@angular/common/http';
     AppComponent,
     DashboardComponent,
     NavigationComponent,
-    RightPanelComponent,
+    LeftPanelComponent,
     CenterPanelComponent,
-    AddCustomerComponent,
+    AddPartyComponent,
     TextComponentComponent,
     OrdersComponent,
     AddOrderComponent,
@@ -46,7 +47,8 @@ import {HttpClientModule} from '@angular/common/http';
     BrowserModule,
     FormsModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot(AppRoute.ROUTES)
   ],
   providers: [],
   bootstrap: [AppComponent]

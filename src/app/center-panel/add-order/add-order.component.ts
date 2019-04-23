@@ -1,3 +1,8 @@
+import { CustManagerService } from './../../cust-manager.service';
+import { RestEndpoints } from './../../rest-endpoints';
+import { Observable } from 'rxjs';
+import { AppComponent } from './../../app.component';
+import { CenterPanelComponent } from './../center-panel.component';
 import {Component, Input, OnInit} from '@angular/core';
 import {OrderForm} from './order-form';
 import {AllOrdersSummary} from '../all-orders-summary';
@@ -11,10 +16,10 @@ declare var $;
   styleUrls: ['./add-order.component.css']
 })
 export class AddOrderComponent implements OnInit {
-  @Input('parties') parties: Array<any>;
-  @Input('allOrders') allOrders: AllOrdersSummary;
+  parties: Array<any> = [];
+  allOrders: AllOrdersSummary;
 
-  constructor() { }
+  constructor(private service: CustManagerService) { }
 
   orderForm = new OrderForm();
   orderItemForm: any = {};
@@ -22,6 +27,7 @@ export class AddOrderComponent implements OnInit {
 
   ngOnInit() {
     this.orderForm.partyName = 'NULL';
+    this.loadParties();
   }
 
   openForm(target: any) {
@@ -59,5 +65,30 @@ export class AddOrderComponent implements OnInit {
     partyOrder.addOrders(orderItems);
     partyOrder.setStatus('P');
     this.allOrders.addPartyOrder(partyOrder);
+  }
+
+  refreshPartyList() {
+    this.loadParties();
+  }
+
+  loadParties() {
+    this.parties.length = 0;
+    const response: Observable<any> = this.service.get(RestEndpoints.PARTY);
+    response
+      .subscribe(data => {
+          console.log('Data received after GET call - ', data);
+          for (let i = 0; i < data.length; i++) {
+            const party = {
+              id: data[i].partyId,
+              name: data[i].partyName,
+              address: data[i].address
+            };
+            this.parties.push(party);
+          }
+        },
+        error => {
+          console.log('Error occurred on GET call - ', error);
+        });
+
   }
 }

@@ -22,6 +22,7 @@ import {PercentageValidator} from './validators/percentage-validator';
 import {OrderHistoryComponent} from './center-panel/order-history/order-history.component';
 import {RouterModule} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
+import { RightPanelComponent } from './right-panel/right-panel.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {HttpClientModule} from '@angular/common/http';
     SelectValidator,
     QuantityValidator,
     PercentageValidator,
-    OrderHistoryComponent
+    OrderHistoryComponent,
+    RightPanelComponent
   ],
   imports: [
     BrowserModule,

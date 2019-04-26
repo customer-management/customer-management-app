@@ -59,12 +59,34 @@ export class AddOrderComponent implements OnInit {
     this.viewAction = action;
   }
   submitOrder(orderItems: Array<OrderItem>) {
-    const partyOrder = new PartyOrder();
-    partyOrder.setPartyId(this.orderForm.partyId);
-    partyOrder.setPartyName(this.getPartyName(this.orderForm.partyId));
-    partyOrder.addOrders(orderItems);
-    partyOrder.setStatus('P');
-    this.allOrders.addPartyOrder(partyOrder);
+    const orderToBePlaced = {
+      party : {
+        partyId: this.orderForm.partyId
+      },
+      orderItems : []
+    };
+    for (let i = 0; i < orderItems.length; i++) {
+      const orderItem = {
+        stock : {
+          stockId : orderItems[i].item
+        },
+        quantity : orderItems[i].quantity
+      };
+      orderToBePlaced.orderItems.push(orderItem);
+    }
+
+    console.log('Placing order', orderToBePlaced);
+    this.service.post(RestEndpoints.ORDER, orderToBePlaced)
+    .subscribe(data => {
+      this.orderForm.reset();
+      const partyOrder = new PartyOrder();
+      partyOrder.setOrderId(data.orderId);
+      partyOrder.setPartyId(data.party.partyId);
+      partyOrder.setPartyName(data.party.partyName);
+      partyOrder.addOrders(orderItems);
+      partyOrder.setStatus('P');
+      this.allOrders.addPartyOrder(partyOrder);
+    });
   }
 
   refreshPartyList() {

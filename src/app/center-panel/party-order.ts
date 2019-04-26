@@ -2,6 +2,7 @@ import {OrderItem} from './add-order/order-item';
 
 export class PartyOrder {
   constructor() {}
+  private orderId: string;
   private partyId: string;
   private partyName: string;
   private orders = new Array<OrderItem>();
@@ -36,6 +37,12 @@ export class PartyOrder {
 
   addOrder(order: OrderItem) {
     this.orders.push(order);
+  }
+  getOrderId() {
+    return this.orderId;
+  }
+  setOrderId(orderId) {
+    this.orderId = orderId;
   }
   addOrders(orders: Array<OrderItem>) {
     for (let i = 0; i < orders.length; i++) {
